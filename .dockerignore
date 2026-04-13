@@ -28,9 +28,7 @@ Dockerfile
 *.md
 
 # Directories not needed by any Docker build context
-backend/
 client-web-react/
-qwen-code-api/
 instructors/
 scripts/
 caddy/

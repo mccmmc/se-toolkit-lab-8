@@ -113,11 +113,43 @@ Just let me know the lab number or name!
 
 ## Task 2A — Deployed agent
 
-<!-- Paste a short nanobot startup log excerpt showing the gateway started inside Docker -->
+Nanobot runs as a Docker Compose service via `nanobot gateway`. Startup log excerpt:
+
+```
+Using config: /app/nanobot/config.resolved.json
+🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+✓ Channels enabled: webchat
+✓ Heartbeat: every 1800s
+WebChat relay listening on 127.0.0.1:8766
+WebChat starting on 0.0.0.0:8765
+MCP server 'lms': connected, 9 tools registered
+MCP server 'webchat': connected, 1 tools registered
+Agent loop started
+```
+
+WebSocket test — `ws://localhost:42002/ws/chat?access_key=my-secret-key`:
+```json
+{"type":"text","content":"Here are the available labs:\n\n1. **Lab 01** – Products, Architecture & Roles\n2. **Lab 02** — Run, Fix, and Deploy a Backend Service\n3. **Lab 03** — Backend API: Explore, Debug, Implement, Deploy\n4. **Lab 04** — Testing, Front-end, and AI Agents\n5. **Lab 05** — Data Pipeline and Analytics Dashboard\n6. **Lab 06** — Build Your Own Agent\n7. **Lab 07** — Build a Client with an AI Coding Agent\n8. **Lab 08** — lab-08\n\nWould you like me to check any metrics for a specific lab...","format":"markdown"}
+```
 
 ## Task 2B — Web client
 
-<!-- Screenshot of a conversation with the agent in the Flutter web app -->
+Flutter web client is accessible at `http://<vm-ip>:42002/flutter`. Login with `NANOBOT_ACCESS_KEY` works.
+
+WebSocket endpoint at `/ws/chat` responds with real agent answers backed by LMS MCP tools.
+
+Nanobot logs show healthy end-to-end path:
+```
+Processing message from webchat:...
+Tool call: mcp_lms_lms_labs({})
+HTTP Request: POST http://qwen-code-api:8080/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: GET http://backend:8000/items/ "HTTP/1.1 200 OK"
+Response to webchat:...
+```
+
+<img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
+
+
 
 ## Task 3A — Structured logging
 
