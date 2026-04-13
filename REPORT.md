@@ -147,6 +147,10 @@ HTTP Request: GET http://backend:8000/items/ "HTTP/1.1 200 OK"
 Response to webchat:...
 ```
 
+<img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
+
+
+
 ## Task 3A — Structured logging
 
 <!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
