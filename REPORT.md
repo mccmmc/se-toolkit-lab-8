@@ -172,12 +172,15 @@ backend-1  | INFO:     172.19.0.9:56542 - "GET /items/ HTTP/1.1" 404
 backend-1  | INFO:     172.19.0.9:56542 - "GET /items/ HTTP/1.1" 404 Not Found
 ```
 
+<img width="1907" height="880" alt="image" src="https://github.com/user-attachments/assets/15798905-6339-42a5-b4b5-aae2097856cc" />
 
 
 
 ## Task 3B — Traces
+<img width="1897" height="938" alt="image" src="https://github.com/user-attachments/assets/a08c70de-a817-4036-8f90-cebcdade73e5" />
 
-<!-- Screenshots: healthy trace span hierarchy, error trace -->
+<img width="1280" height="309" alt="image" src="https://github.com/user-attachments/assets/2289fe1d-015a-4f44-8a0f-12e9535b0981" />
+
 
 ## Task 3C — Observability MCP tools
 
