@@ -155,15 +155,74 @@ nanobot-1  | 2026-04-14 15:03:00.642 | INFO     | nanobot.agent.loop:run:280 - A
 
 ## Task 3A — Structured logging
 
-<!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
+Happy-path log excerpt
+
+```
+backend-1  | 2026-04-14 15:18:33,777 INFO [lms_backend.main] [main.py:62] [trace_id=fea687cefc6f83013edaaaab86ab11f6 span_id=6d275b3947dea350 resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-04-14 15:18:33,781 INFO [lms_backend.auth] [auth.py:30] [trace_id=fea687cefc6f83013edaaaab86ab11f6 span_id=6d275b3947dea350 resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-04-14 15:18:33,783 INFO [lms_backend.db.items] [items.py:16] [trace_id=fea687cefc6f83013edaaaab86ab11f6 span_id=6d275b3947dea350 resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-04-14 15:18:33,859 INFO [lms_backend.main] [main.py:74] [trace_id=fea687cefc6f83013edaaaab86ab11f6 span_id=6d275b3947dea350 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.19.0.9:50544 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | INFO:     172.19.0.9:50544 - "GET /items/ HTTP/1.1" 200
+```
+
+Error-path log excerpt
+```backend-1  | 2026-04-14 15:51:26,579 INFO [lms_backend.main] [main.py:74] [trace_id=ce494836f2e130e037d5e8c7d10a5f6d span_id=e19e9055e525ee07 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.19.0.9:56542 - "GET /items/ HTTP/1.1" 404
+backend-1  | INFO:     172.19.0.9:56542 - "GET /items/ HTTP/1.1" 404 Not Found
+```
+
+<img width="1907" height="880" alt="image" src="https://github.com/user-attachments/assets/15798905-6339-42a5-b4b5-aae2097856cc" />
+
+
 
 ## Task 3B — Traces
+<img width="1897" height="938" alt="image" src="https://github.com/user-attachments/assets/a08c70de-a817-4036-8f90-cebcdade73e5" />
 
-<!-- Screenshots: healthy trace span hierarchy, error trace -->
+<img width="1280" height="309" alt="image" src="https://github.com/user-attachments/assets/2289fe1d-015a-4f44-8a0f-12e9535b0981" />
+
 
 ## Task 3C — Observability MCP tools
 
-<!-- Paste agent responses to "any errors in the last hour?" under normal and failure conditions -->
+Normal conditions (PostgreSQL running)
+Question: "Any LMS backend errors in the last 10 minutes?"
+
+```
+No LMS backend errors detected in the last 10 minutes. The Learning Management Service appears to be running cleanly. 🟢
+```
+
+Failure conditions (PostgreSQL stopped)
+Question: "Any LMS backend errors in the last 10 minutes?"
+
+```
+Yes, there are **3 errors** in the LMS backend from the last 10 minutes. Here's what I found:
+
+### Error Summary
+
+| Time | Event | Details |
+|------|-------|---------|
+| 17:17:54 | `unhandled_exception` | Sync pipeline (`/pipeline/sync`) crashed |
+| 17:17:50 | `db_query` error | SELECT on `item` table failed |
+| 17:17:47 | `db_query` error | SELECT on `item` table failed |
+
+### Root Cause
+
+All errors share the same underlying issue: **`[Errno -2] Name or service not known`** — a DNS resolution failure. The LMS backend cannot resolve the database hostname, so it can't connect to PostgreSQL.
+
+The stack trace shows the failure originates in `asyncpg` when trying to establish a connection:
+```
+socket.gaierror: [Errno -2] Name or service not known
+```
+
+This cascaded into an unhandled exception during the sync pipeline at `etl.py:230` → `load_items()`.
+
+### Likely Causes
+- Database hostname misconfigured in environment variables
+- DNS service unavailable or misconfigured
+- Network connectivity issue between the LMS service and the database
+
+Would you like me to dig deeper into any specific trace or check the LMS health status?
+```
 
 ## Task 4A — Multi-step investigation
 

@@ -8,6 +8,8 @@ dependencies = [
     # Task 2B
     "mcp-webchat",
     "nanobot-webchat",
+    # Task 3
+    "mcp-obs",
 ]
 
 [dependency-groups]
@@ -18,3 +20,5 @@ nanobot-ai = { url = "https://github.com/HKUDS/nanobot/archive/e7d371ec1e6531b28
 # Task 2B
 mcp-webchat = { workspace = true, editable = true }
 nanobot-webchat = { workspace = true, editable = true }
+# Task 3
+mcp-obs = { workspace = true, editable = true }
