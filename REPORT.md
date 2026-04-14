@@ -112,7 +112,7 @@ Just let me know the lab number or name!
 ```
 
 ## Task 2A — Deployed agent
-
+```
 NAME                                IMAGE                                                                                         COMMAND                  SERVICE          CREATED        STATUS                  PORTS
 se-toolkit-lab-8-backend-1          se-toolkit-lab-8-backend                                                                      "opentelemetry-instr…"   backend          29 hours ago   Up 29 hours             127.0.0.1:42001->8000/tcp
 se-toolkit-lab-8-caddy-1            harbor.pg.innopolis.university/docker-hub-cache/caddy:2.11-alpine                             "caddy run --config …"   caddy            34 hours ago   Up 34 hours             443/tcp, 2019/tcp, 443/udp, 0.0.0.0:42002->80/tcp
@@ -123,7 +123,7 @@ se-toolkit-lab-8-postgres-1         harbor.pg.innopolis.university/docker-hub-ca
 se-toolkit-lab-8-qwen-code-api-1    se-toolkit-lab-8-qwen-code-api                                                                "docker-entrypoint.s…"   qwen-code-api    29 hours ago   Up 29 hours (healthy)   127.0.0.1:42005->8080/tcp
 se-toolkit-lab-8-victorialogs-1     harbor.pg.innopolis.university/docker-hub-cache/victoriametrics/victoria-logs:latest          "/victoria-logs-prod…"   victorialogs     2 weeks ago    Up 36 hours             127.0.0.1:42010->9428/tcp
 se-toolkit-lab-8-victoriatraces-1   harbor.pg.innopolis.university/docker-hub-cache/victoriametrics/victoria-traces:latest        "/victoria-traces-pr…"   victoriatraces   2 weeks ago    Up 36 hours             127.0.0.1:42011->10428/tcp
-
+```
 Nanobot runs as a Docker Compose service via `nanobot gateway`. Startup log excerpt:
 
 ```
