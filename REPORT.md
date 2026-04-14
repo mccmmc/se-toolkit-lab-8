@@ -112,55 +112,46 @@ Just let me know the lab number or name!
 ```
 
 ## Task 2A — Deployed agent
-```
-NAME                                IMAGE                                                                                         COMMAND                  SERVICE          CREATED        STATUS                  PORTS
-se-toolkit-lab-8-backend-1          se-toolkit-lab-8-backend                                                                      "opentelemetry-instr…"   backend          29 hours ago   Up 29 hours             127.0.0.1:42001->8000/tcp
-se-toolkit-lab-8-caddy-1            harbor.pg.innopolis.university/docker-hub-cache/caddy:2.11-alpine                             "caddy run --config …"   caddy            34 hours ago   Up 34 hours             443/tcp, 2019/tcp, 443/udp, 0.0.0.0:42002->80/tcp
-se-toolkit-lab-8-nanobot-1          se-toolkit-lab-8-nanobot                                                                      "python /app/nanobot…"   nanobot          29 hours ago   Up 29 hours             
-se-toolkit-lab-8-otel-collector-1   harbor.pg.innopolis.university/docker-hub-cache/otel/opentelemetry-collector-contrib:latest   "/otelcol-contrib --…"   otel-collector   2 weeks ago    Up 36 hours             4317-4318/tcp, 55679/tcp
-se-toolkit-lab-8-pgadmin-1          harbor.pg.innopolis.university/docker-hub-cache/dpage/pgadmin4:latest                         "/entrypoint.sh"         pgadmin          2 weeks ago    Up 36 hours             443/tcp, 127.0.0.1:42003->80/tcp
-se-toolkit-lab-8-postgres-1         harbor.pg.innopolis.university/docker-hub-cache/postgres:18.3-alpine                          "docker-entrypoint.s…"   postgres         36 hours ago   Up 36 hours (healthy)   127.0.0.1:42004->5432/tcp
-se-toolkit-lab-8-qwen-code-api-1    se-toolkit-lab-8-qwen-code-api                                                                "docker-entrypoint.s…"   qwen-code-api    29 hours ago   Up 29 hours (healthy)   127.0.0.1:42005->8080/tcp
-se-toolkit-lab-8-victorialogs-1     harbor.pg.innopolis.university/docker-hub-cache/victoriametrics/victoria-logs:latest          "/victoria-logs-prod…"   victorialogs     2 weeks ago    Up 36 hours             127.0.0.1:42010->9428/tcp
-se-toolkit-lab-8-victoriatraces-1   harbor.pg.innopolis.university/docker-hub-cache/victoriametrics/victoria-traces:latest        "/victoria-traces-pr…"   victoriatraces   2 weeks ago    Up 36 hours             127.0.0.1:42011->10428/tcp
-```
-Nanobot runs as a Docker Compose service via `nanobot gateway`. Startup log excerpt:
+Nanobot deployed as a Docker Compose service via `nanobot gateway`. Startup log:
 
 ```
-Using config: /app/nanobot/config.resolved.json
-🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
-✓ Channels enabled: webchat
-✓ Heartbeat: every 1800s
-WebChat relay listening on 127.0.0.1:8766
-WebChat starting on 0.0.0.0:8765
-MCP server 'lms': connected, 9 tools registered
-MCP server 'webchat': connected, 1 tools registered
-Agent loop started
-```
-
-WebSocket test — `ws://localhost:42002/ws/chat?access_key=my-secret-key`:
-```json
-{"type":"text","content":"Here are the available labs:\n\n1. **Lab 01** – Products, Architecture & Roles\n2. **Lab 02** — Run, Fix, and Deploy a Backend Service\n3. **Lab 03** — Backend API: Explore, Debug, Implement, Deploy\n4. **Lab 04** — Testing, Front-end, and AI Agents\n5. **Lab 05** — Data Pipeline and Analytics Dashboard\n6. **Lab 06** — Build Your Own Agent\n7. **Lab 07** — Build a Client with an AI Coding Agent\n8. **Lab 08** — lab-08\n\nWould you like me to check any metrics for a specific lab...","format":"markdown"}
+nanobot-1  | Using config: /app/nanobot/config.resolved.json
+nanobot-1  | 🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+root@Toolkit004:~/se-toolkit-lab-8# docker compose --env-file .env.docker.secret logs nanobot --tail 50
+nanobot-1  | Using config: /app/nanobot/config.resolved.json
+nanobot-1  | 🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+nanobot-1  | 2026-04-14 15:02:55.322 | DEBUG    | nanobot.channels.registry:discover_all:64 - Skipping built-in channel 'matrix': Matrix dependencies not installed. Run: pip install nanobot-ai[matrix]
+nanobot-1  | 2026-04-14 15:02:55.681 | INFO     | nanobot.channels.manager:_init_channels:58 - WebChat channel enabled
+nanobot-1  | ✓ Channels enabled: webchat
+nanobot-1  | ✓ Heartbeat: every 1800s
+nanobot-1  | 2026-04-14 15:02:55.683 | INFO     | nanobot.cron.service:_load_store:85 - Cron: jobs.json modified externally, reloading
+nanobot-1  | 2026-04-14 15:02:55.684 | INFO     | nanobot.cron.service:start:202 - Cron service started with 0 jobs
+nanobot-1  | 2026-04-14 15:02:55.684 | INFO     | nanobot.heartbeat.service:start:124 - Heartbeat started (every 1800s)
+nanobot-1  | 2026-04-14 15:02:56.081 | INFO     | nanobot.channels.manager:start_all:91 - Starting webchat channel...
+nanobot-1  | 2026-04-14 15:02:56.082 | INFO     | nanobot.channels.manager:_dispatch_outbound:119 - Outbound dispatcher started
+nanobot-1  | 2026-04-14 15:02:56,084 INFO [nanobot_webchat.channel] [channel.py:178] [trace_id=0 span_id=0 resource.service.name=nanobot trace_sampled=False] - WebChat relay listening on 127.0.0.1:8766
+nanobot-1  | 2026-04-14 15:02:56,084 INFO [nanobot_webchat.channel] [channel.py:91] [trace_id=0 span_id=0 resource.service.name=nanobot trace_sampled=False] - WebChat starting on 0.0.0.0:8765
+nanobot-1  | 2026-04-14 15:02:56,087 INFO [websockets.server] [server.py:341] [trace_id=0 span_id=0 resource.service.name=nanobot trace_sampled=False] - server listening on 0.0.0.0:8765
+nanobot-1  | 2026-04-14 15:02:59,084 INFO [mcp.server.lowlevel.server] [server.py:720] [trace_id=0 span_id=0 resource.service.name=mcp-lms trace_sampled=False] - Processing request of type ListToolsRequest
+nanobot-1  | 2026-04-14 15:02:59.089 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_health' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.089 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_labs' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.089 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_learners' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_pass_rates' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_timeline' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_groups' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_top_learners' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_completion_rate' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_sync_pipeline' from server 'lms'
+nanobot-1  | 2026-04-14 15:02:59.090 | INFO     | nanobot.agent.tools.mcp:connect_mcp_servers:246 - MCP server 'lms': connected, 9 tools registered
+nanobot-1  | 2026-04-14 15:03:00,639 INFO [mcp.server.lowlevel.server] [server.py:720] [trace_id=0 span_id=0 resource.service.name=mcp-webchat trace_sampled=False] - Processing request of type ListToolsRequest
+nanobot-1  | 2026-04-14 15:03:00.641 | DEBUG    | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_webchat_ui_message' from server 'webchat'
+nanobot-1  | 2026-04-14 15:03:00.641 | INFO     | nanobot.agent.tools.mcp:connect_mcp_servers:246 - MCP server 'webchat': connected, 1 tools registered
+nanobot-1  | 2026-04-14 15:03:00.642 | INFO     | nanobot.agent.loop:run:280 - Agent loop started
 ```
 
 ## Task 2B — Web client
+
 <img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
-
-Flutter web client is accessible at `http://<vm-ip>:42002/flutter`. Login with `NANOBOT_ACCESS_KEY` works.
-
-WebSocket endpoint at `/ws/chat` responds with real agent answers backed by LMS MCP tools.
-
-Nanobot logs show healthy end-to-end path:
-```
-Processing message from webchat:...
-Tool call: mcp_lms_lms_labs({})
-HTTP Request: POST http://qwen-code-api:8080/v1/chat/completions "HTTP/1.1 200 OK"
-HTTP Request: GET http://backend:8000/items/ "HTTP/1.1 200 OK"
-Response to webchat:...
-```
-
-
-
 
 ## Task 3A — Structured logging
 
