@@ -177,8 +177,14 @@ backend-1  | INFO:     172.19.0.9:56542 - "GET /items/ HTTP/1.1" 404 Not Found
 
 
 ## Task 3B — Traces
+Healthy trace
+
+TraceID: `cc09ad81048d64bd65a3d2bbf2ef6015`
 <img width="1897" height="938" alt="image" src="https://github.com/user-attachments/assets/a08c70de-a817-4036-8f90-cebcdade73e5" />
 
+Error trace
+
+TraceID: `9e5341cda63a8e79420171649482c714`
 <img width="1280" height="309" alt="image" src="https://github.com/user-attachments/assets/2289fe1d-015a-4f44-8a0f-12e9535b0981" />
 
 
