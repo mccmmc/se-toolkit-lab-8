@@ -144,6 +144,7 @@ WebSocket test — `ws://localhost:42002/ws/chat?access_key=my-secret-key`:
 ```
 
 ## Task 2B — Web client
+<img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
 
 Flutter web client is accessible at `http://<vm-ip>:42002/flutter`. Login with `NANOBOT_ACCESS_KEY` works.
 
@@ -158,7 +159,6 @@ HTTP Request: GET http://backend:8000/items/ "HTTP/1.1 200 OK"
 Response to webchat:...
 ```
 
-<img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
 
 
 
