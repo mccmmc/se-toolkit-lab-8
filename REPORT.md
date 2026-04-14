@@ -150,6 +150,7 @@ nanobot-1  | 2026-04-14 15:03:00.642 | INFO     | nanobot.agent.loop:run:280 - A
 ```
 
 ## Task 2B — Web client
+
 <img width="1917" height="979" alt="image" src="https://github.com/user-attachments/assets/519c8916-bfe6-4668-9715-a276805ae064" />
 
 ## Task 3A — Structured logging
